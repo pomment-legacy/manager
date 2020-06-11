@@ -1,3 +1,6 @@
+import 'normalize.css/normalize.css';
+import './vendors/fluidable.scss';
+
 import Vue from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';

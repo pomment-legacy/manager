@@ -1,0 +1,109 @@
+<template>
+    <div class="main">
+        <div class="main-panel">
+            <h1>Pomment</h1>
+            <form v-on:submit.prevent="login">
+                <input type="url" placeholder="Site API URL" required v-model="url">
+                <input type="password" placeholder="Password" required v-model="password">
+                <input type="submit" value="Sign in">
+            </form>
+        </div>
+        <footer>&copy; The Pomment Team | Version {{ version }}</footer>
+    </div>
+</template>
+
+<style lang="scss" scoped>
+.main-panel {
+    width: calc(100vw - 2em);
+    max-width: 24em;
+    margin: 0 auto;
+    position: absolute;
+    left: 1em;
+    top: 1em;
+    @media (min-width: 480px) {
+        left: calc(50% - 12em);
+        top: calc(50% - 7em);
+        // transform: translate3d(-50%, -50%, 0);
+        width: 24em;
+        text-align: center;
+    }
+    h1 {
+        margin: 0;
+        padding: 0.5em 0;
+        color: #bdbdbd;
+    }
+    input[type="url"], input[type="password"] {
+        -webkit-appearance: none;
+        box-sizing: border-box;
+        display: block;
+        background-color: transparent;
+        color: #fff;
+        border: 0;
+        border-radius: 0;
+        padding: 0.6em 0.4em;
+        width: 100%;
+        font-size: 1em;
+        border-bottom: 2px rgba(255, 255, 255, 0.13) solid;
+        margin-bottom: 0.44em;
+        transition: border-bottom-color 0.2s;
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.13);
+            transition: color 0.2s;
+        }
+        &:focus {
+            outline: none;
+            border-bottom: 2px rgba(255, 255, 255, 0.6) solid;
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+        }
+    }
+    input[type="password"] {
+        margin-bottom: 1em;
+    }
+    input[type="submit"] {
+        -webkit-appearance: none;
+        width: 8em;
+        height: 2.5em;
+        border: 0;
+        border-radius: 0.5em;
+        background-color: #ff9800;
+        transition: background-color 0.2s;
+        margin-bottom: 1em;
+        &:focus {
+            outline: none;
+            background-color: darken($color: #ff9800, $amount: 20%);
+        }
+    }
+}
+footer {
+    width: 100vw;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    padding: 0.5em 0;
+    font-size: 0.875em;
+    color: rgba(255, 255, 255, 0.31);
+}
+</style>
+
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+    data: () => ({
+        url: '',
+        password: '',
+        version: '',
+    }),
+    methods: {
+        login() {
+            // eslint-disable-next-line no-alert
+            alert(`You logged in!!! URL: ${this.url}, Password: ${this.password}`);
+        },
+    },
+    beforeMount() {
+        this.version = process.env.NODE_ENV;
+    },
+});
+</script>
