@@ -13,6 +13,9 @@
 </template>
 
 <style lang="scss" scoped>
+$mobile: 480px;
+$mainTheme: #03a9f4;
+
 .main-panel {
     width: calc(100vw - 2em);
     max-width: 24em;
@@ -20,7 +23,7 @@
     position: absolute;
     left: 1em;
     top: 1em;
-    @media (min-width: 480px) {
+    @media (min-width: $mobile) {
         left: calc(50% - 12em);
         top: calc(50% - 7em);
         // transform: translate3d(-50%, -50%, 0);
@@ -63,16 +66,20 @@
     }
     input[type="submit"] {
         -webkit-appearance: none;
-        width: 8em;
+        width: 100%;
+        @media (min-width: $mobile) {
+            width: 8em;
+        }
         height: 2.5em;
         border: 0;
         border-radius: 0.5em;
-        background-color: #ff9800;
+        background-color: $mainTheme;
         transition: background-color 0.2s;
         margin-bottom: 1em;
+        color: #fff;
         &:focus {
             outline: none;
-            background-color: darken($color: #ff9800, $amount: 20%);
+            background-color: darken($color: $mainTheme, $amount: 10%);
         }
     }
 }
@@ -102,7 +109,7 @@ export default Vue.extend({
             alert(`You logged in!!! URL: ${this.url}, Password: ${this.password}`);
         },
     },
-    beforeMount() {
+    mounted() {
         this.version = process.env.NODE_ENV;
     },
 });
