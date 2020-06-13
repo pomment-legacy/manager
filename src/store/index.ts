@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import hmacSHA512 from 'crypto-js/hmac-sha512';
+import { sha512 } from 'js-sha512';
 import { IAuth } from 'pomment-common/dist/auth';
 import ThreadList from '@/interface/thread-list';
 import RootState from '@/interface/state-types';
@@ -12,7 +12,7 @@ function getAuthObject(token: string): IAuth {
     const time = new Date().getTime();
     return {
         time,
-        token: hmacSHA512(`${time}`, token).toString(),
+        token: sha512.hmac.create(token).update(`${time}`).hex(),
     };
 }
 

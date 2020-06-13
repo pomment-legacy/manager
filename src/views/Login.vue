@@ -100,13 +100,14 @@ footer {
 
 <script lang="ts">
 import Vue from 'vue';
-import SHA512 from 'crypto-js/sha512';
+import { sha512 } from 'js-sha512';
+import { version } from '../../package.json';
 
 export default Vue.extend({
     data: () => ({
         url: process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000' : '',
         password: process.env.NODE_ENV === 'development' ? 'password' : '',
-        version: '',
+        version,
         noSubmit: false,
         submitDisplay: 'Sign in',
     }),
@@ -116,19 +117,12 @@ export default Vue.extend({
             this.submitDisplay = 'Signing in...';
             this.$store.commit('setLoginInfo', {
                 url: this.url,
-                token: SHA512(this.password).toString(),
+                token: sha512(this.password),
             });
             this.$store.dispatch('getThreadList').then(() => {
                 this.$router.push('/dashboard');
-            }).catch((e) => {
-                alert(`Error!!!\n\n${e}`);
             });
-            // this.$store.commit('setLoginStatus', { logged: true, token: '1234aaaa' });
-            // this.$router.push('/dashboard');
         },
-    },
-    mounted() {
-        this.version = process.env.NODE_ENV;
     },
 });
 </script>
