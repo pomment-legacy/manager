@@ -5,7 +5,7 @@
             <form v-on:submit.prevent="login">
                 <input type="url" placeholder="Site API URL" required v-model="url">
                 <input type="password" placeholder="Password" required v-model="password">
-                <input type="submit" value="Sign in">
+                <input type="submit" v-model="submitDisplay" v-bind:disabled="noSubmit">
             </form>
         </div>
         <footer>&copy; The Pomment Team | Version {{ version }}</footer>
@@ -74,12 +74,16 @@ $mainTheme: #03a9f4;
         border: 0;
         border-radius: 0.5em;
         background-color: $mainTheme;
-        transition: background-color 0.2s;
+        opacity: 1;
+        transition: background-color 0.2s, opacity 0.1s;
         margin-bottom: 1em;
         color: #fff;
         &:focus {
             outline: none;
             background-color: darken($color: $mainTheme, $amount: 10%);
+        }
+        &:disabled {
+            opacity: 0.5;
         }
     }
 }
@@ -96,17 +100,31 @@ footer {
 
 <script lang="ts">
 import Vue from 'vue';
+import SHA512 from 'crypto-js/sha512';
 
 export default Vue.extend({
     data: () => ({
-        url: '',
-        password: '',
+        url: process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000' : '',
+        password: process.env.NODE_ENV === 'development' ? 'password' : '',
         version: '',
+        noSubmit: false,
+        submitDisplay: 'Sign in',
     }),
     methods: {
         login() {
-            // eslint-disable-next-line no-alert
-            alert(`You logged in!!! URL: ${this.url}, Password: ${this.password}`);
+            this.noSubmit = true;
+            this.submitDisplay = 'Signing in...';
+            this.$store.commit('setLoginInfo', {
+                url: this.url,
+                token: SHA512(this.password).toString(),
+            });
+            this.$store.dispatch('getThreadList').then(() => {
+                this.$router.push('/dashboard');
+            }).catch((e) => {
+                alert(`Error!!!\n\n${e}`);
+            });
+            // this.$store.commit('setLoginStatus', { logged: true, token: '1234aaaa' });
+            // this.$router.push('/dashboard');
         },
     },
     mounted() {

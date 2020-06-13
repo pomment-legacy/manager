@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import store from '@/store';
 // import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
@@ -8,7 +9,12 @@ const routes: Array<RouteConfig> = [
     {
         path: '/',
         name: 'Home',
-        redirect: () => '/login',
+        redirect: () => {
+            if (!store.state.logged) {
+                return '/login';
+            }
+            return '/dashboard';
+        },
     },
     {
         path: '/about',
@@ -22,6 +28,11 @@ const routes: Array<RouteConfig> = [
         path: '/login',
         name: 'Login',
         component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Dashboard.vue'),
     },
 ];
 
