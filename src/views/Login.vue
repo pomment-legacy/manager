@@ -120,7 +120,7 @@ export default Vue.extend({
                 token: sha512(this.password),
             });
             this.$store.dispatch('getThreadList').then(() => {
-                this.$router.push('/dashboard');
+                this.$router.push('/list');
             });
         },
     },

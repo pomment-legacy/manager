@@ -30,9 +30,9 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+        path: '/list',
+        name: 'List',
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/List.vue'),
     },
 ];
 

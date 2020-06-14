@@ -39,7 +39,7 @@ export default new Vuex.Store<RootState>({
     actions: {
         async getThreadList(ctx) {
             try {
-                const result = await axios.post(`${ctx.state.url}/v2/manage/threads`, {
+                const result = await axios.post(`${ctx.state.url}/v3/manage/threads`, {
                     auth: getAuthObject(ctx.state.token),
                 });
                 this.commit('setThreadList', {
