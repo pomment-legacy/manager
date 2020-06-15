@@ -1,14 +1,18 @@
 <template>
-    <div class="nav-outer">
-        <nav class="container">
-            <h1>Pomment</h1>
-            <ul class="nav-item">
-                <li v-for="item in menuItems" :key="item.to">
-                    <router-link v-bind:to="item.to">{{ item.name }}</router-link>
-                </li>
-            </ul>
-        </nav>
-        <router-view />
+    <div>
+        <div class="nav-outer">
+            <nav class="container">
+                <h1>Pomment</h1>
+                <ul class="nav-item">
+                    <li v-for="item in menuItems" :key="item.to">
+                        <router-link v-bind:to="item.to">{{ item.name }}</router-link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main container">
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -17,11 +21,12 @@
     position: fixed;
     background-color: rgba(0, 0, 0, .9);
     box-shadow: 0 0 45px 0 rgba(0, 0, 0, .5);
-    width: 100vw;
+    width: 100%;
     nav {
         // max-width: 732px;
         height: 3.5rem;
         margin: 0 auto;
+        padding: 0;
         h1 {
             float: left;
             color: #ddd;
@@ -29,6 +34,7 @@
             margin: 0;
             height: 3.5rem;
             line-height: 3.5rem;
+            padding: 0 1rem;
         }
         ul.nav-item {
             float: right;
@@ -57,6 +63,16 @@
     }
 }
 
+.main {
+    padding-top: 3.5rem;
+}
+
+</style>
+
+<style lang="scss">
+body {
+    background-color: #141414;
+}
 </style>
 
 <script lang="ts">
@@ -67,9 +83,14 @@ export default Vue.extend({
         return {
             menuItems: [
                 { name: 'Switch Site', to: '/logout' },
-                { name: 'Etc', to: '/logout' },
+                { name: 'Etc', to: '/test' },
             ],
         };
+    },
+    beforeCreate() {
+        if (!this.$store.state.logged) {
+            this.$router.push('/login');
+        }
     },
 });
 </script>

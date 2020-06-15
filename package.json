@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "base64url": "^3.0.1",
     "core-js": "^3.6.5",
     "js-sha512": "^0.8.0",
     "normalize.css": "^8.0.1",
