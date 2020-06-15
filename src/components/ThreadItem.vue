@@ -1,14 +1,15 @@
 <template>
     <li class="thread-item">
         <span class="meta first"><router-link :to="base64url">{{ title }}</router-link></span>
-        <span class="meta second">
-            {{ amount }} Replies&nbsp;&nbsp;•&nbsp;&nbsp;{{ latestPosted }}
-        </span>
+        <ul class="meta second">
+            <li>{{ amount }} Replies</li>
+            <li>{{ latestPosted }}</li>
+        </ul>
     </li>
 </template>
 
 <style scoped lang="scss">
-li {
+li.thread-item {
     list-style: none;
     color: #fff;
     padding: 0.6em 1em;
@@ -30,8 +31,30 @@ li {
         }
         &.second {
             margin-top: 0.8em;
+            padding: 0;
             font-size: 0.875em;
             color: rgba(255, 255, 255, 0.4);
+            li {
+                margin: 0;
+                padding: 0;
+                padding-right: 1.6em;
+                list-style: none;
+                display: inline-block;
+                &:after {
+                    content: '•';
+                    position: absolute;
+                    width: 1.6em;
+                    height: 1em;
+                    line-height: 1em;
+                    text-align: center;
+                }
+                &:last-child {
+                    padding-right: 0;
+                    &:after {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 }

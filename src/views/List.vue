@@ -67,6 +67,7 @@ $mainTheme: #03a9f4;
 
 .main {
     padding-top: 4.5rem;
+    max-width: 768px;
 }
 
 </style>
