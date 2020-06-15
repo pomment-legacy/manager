@@ -13,7 +13,7 @@ const routes: Array<RouteConfig> = [
             if (!store.state.logged) {
                 return '/login';
             }
-            return '/dashboard';
+            return '/list/threads';
         },
     },
     {
@@ -24,7 +24,7 @@ const routes: Array<RouteConfig> = [
     {
         path: '/list',
         name: 'List',
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/List.vue'),
+        component: () => import(/* webpackChunkName: "list" */ '../views/List.vue'),
         children: [
             {
                 path: 'threads',
