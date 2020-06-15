@@ -18,6 +18,10 @@
     background-color: #282828;
     border-radius: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0.5em 0.5em 1em 1em;
+    ul {
+        margin: 0;
+        padding: 0;
+    }
 }
 </style>
 

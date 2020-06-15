@@ -17,6 +17,8 @@
 </template>
 
 <style lang="scss" scoped>
+$mainTheme: #03a9f4;
+
 .nav-outer {
     position: fixed;
     background-color: rgba(0, 0, 0, .9);
@@ -50,11 +52,11 @@
                     line-height: 3.5rem;
                     color: #ddd;
                     text-decoration: none;
-                    box-shadow: inset #ff9800 0 0 0 0;
+                    box-shadow: inset $mainTheme 0 0 0 0;
                     transition: color .21s, box-shadow .21s;
                     &:hover {
-                        color: #ff9800;
-                        box-shadow: inset #ff9800 0 -3px 0 0;
+                        color: $mainTheme;
+                        box-shadow: inset $mainTheme 0 -3px 0 0;
                         text-decoration: none
                     }
                 }
@@ -64,7 +66,7 @@
 }
 
 .main {
-    padding-top: 3.5rem;
+    padding-top: 4.5rem;
 }
 
 </style>
