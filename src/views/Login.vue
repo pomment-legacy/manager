@@ -17,6 +17,18 @@ $mobile: 480px;
 $mainTheme: #03a9f4;
 
 .main-panel {
+    --title: #bdbdbd;
+    --inputText: #fff;
+    --inputBorder: rgba(255, 255, 255, 0.13);
+    --inputBorderFocus: rgba(255, 255, 255, 0.6);
+
+    @media screen and (prefers-color-scheme: light) {
+        --title: #383838;
+        --inputText: #000;
+        --inputBorder: rgba(0, 0, 0, 0.25);
+        --inputBorderFocus: rgba(0, 0, 0, 0.7);
+    }
+
     width: calc(100vw - 2em);
     max-width: 24em;
     margin: 0 auto;
@@ -33,31 +45,31 @@ $mainTheme: #03a9f4;
     h1 {
         margin: 0;
         padding: 0.5em 0;
-        color: #bdbdbd;
+        color: var(--title);
     }
     input[type="url"], input[type="password"] {
         -webkit-appearance: none;
         box-sizing: border-box;
         display: block;
         background-color: transparent;
-        color: #fff;
+        color: var(--inputText);
         border: 0;
         border-radius: 0;
         padding: 0.6em 0.4em;
         width: 100%;
         font-size: 1em;
-        border-bottom: 2px rgba(255, 255, 255, 0.13) solid;
+        border-bottom: 2px var(--inputBorder) solid;
         margin-bottom: 0.44em;
         transition: border-bottom-color 0.2s;
         &::placeholder {
-            color: rgba(255, 255, 255, 0.13);
+            color: var(--inputBorder);
             transition: color 0.2s;
         }
         &:focus {
             outline: none;
-            border-bottom: 2px rgba(255, 255, 255, 0.6) solid;
+            border-bottom: 2px var(--inputBorderFocus) solid;
             &::placeholder {
-                color: rgba(255, 255, 255, 0.6);
+                color: var(--inputBorderFocus);
             }
         }
     }
@@ -88,13 +100,19 @@ $mainTheme: #03a9f4;
     }
 }
 footer {
+    --copyright: rgba(255, 255, 255, 0.31);
+
+    @media screen and (prefers-color-scheme: light) {
+        --copyright: rgba(0, 0, 0, 0.5);
+    }
+
     width: 100vw;
     text-align: center;
     position: absolute;
     bottom: 0;
     padding: 0.5em 0;
     font-size: 0.875em;
-    color: rgba(255, 255, 255, 0.31);
+    color: var(--copyright);
 }
 </style>
 

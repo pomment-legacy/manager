@@ -5,12 +5,9 @@
 <style lang="scss">
 body {
     font-family:
-    "lucida grande",
-    "lucida sans unicode",
-    "Helvetica Neue",
-    Tahoma,
+    'Rubik',
+    'Arial',
     "PingFang SC",
-    "Hiragino Sans GB",
     "Source Han Sans CN Normal",
     "Heiti SC",
     "Microsoft YaHei",
@@ -18,6 +15,9 @@ body {
     SimSun,
     sans-serif;
     margin: 0;
-    background-color: #202020;
+    background-color: #141414;
+    @media screen and (prefers-color-scheme: light) {
+        background-color: #fff;
+    }
 }
 </style>

@@ -74,12 +74,6 @@ $mainTheme: #03a9f4;
 
 </style>
 
-<style lang="scss">
-body {
-    background-color: #141414;
-}
-</style>
-
 <script lang="ts">
 import Vue from 'vue';
 
