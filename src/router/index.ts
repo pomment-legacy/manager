@@ -31,6 +31,11 @@ const routes: Array<RouteConfig> = [
                 name: 'Threads',
                 component: () => import(/* webpackChunkName: "threads" */ '../views/List/Threads.vue'),
             },
+            {
+                path: 'posts/:threadURL',
+                name: 'Posts',
+                component: () => import(/* webpackChunkName: "posts" */ '../views/List/Posts.vue'),
+            },
         ],
     },
 ];
