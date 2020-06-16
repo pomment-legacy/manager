@@ -38,18 +38,12 @@ export default new Vuex.Store<RootState>({
     },
     actions: {
         async getThreadList(ctx) {
-            try {
-                const result = await axios.post(`${ctx.state.url}/v3/manage/threads`, {
-                    auth: getAuthObject(ctx.state.token),
-                });
-                this.commit('setThreadList', {
-                    threads: result.data,
-                });
-            } catch (e) {
-                throw new Error(`Unable to fetch thread list: ${e}`);
-            }
+            const result = await axios.post(`${ctx.state.url}/v3/manage/threads`, {
+                auth: getAuthObject(ctx.state.token),
+            });
+            this.commit('setThreadList', {
+                threads: result.data,
+            });
         },
-    },
-    modules: {
     },
 });

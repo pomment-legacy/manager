@@ -142,6 +142,21 @@ export default Vue.extend({
                     logged: true,
                 });
                 this.$router.push('/list/threads');
+            }).catch((e) => {
+                let reason = `${e}`;
+                if (e.response?.status === 403) {
+                    reason = 'Bad password';
+                } else if (e.response?.status >= 500) {
+                    reason = 'Internal Server Error';
+                }
+                this.$notify({
+                    group: 'main',
+                    title: 'Login Failed',
+                    type: 'error',
+                    text: reason,
+                });
+                this.noSubmit = false;
+                this.submitDisplay = 'Sign in';
             });
         },
     },
