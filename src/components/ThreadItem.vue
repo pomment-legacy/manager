@@ -3,7 +3,12 @@
         <span class="meta first"><router-link :to="base64url">{{ title }}</router-link></span>
         <ul class="meta second">
             <li>{{ amount }} Replies</li>
-            <li>{{ latestPosted }}</li>
+            <li>
+                <time
+                :datetime="latestPostedISO"
+                :title="latestPostedPretty"
+                >{{ latestPosted }}</time>
+                </li>
         </ul>
     </li>
 </template>
@@ -84,6 +89,12 @@ declare module 'vue/types/vue' {
                 return moment(this.latestPostAt).format('MMM Do, YYYY');
             }
             return moment(this.latestPostAt).fromNow();
+        },
+        latestPostedPretty() {
+            return moment(this.latestPostAt).format('MMMM Do YYYY, H:mm:ss');
+        },
+        latestPostedISO() {
+            return new Date(this.latestPostAt).toISOString();
         },
     },
 })

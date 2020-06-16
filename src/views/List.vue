@@ -88,7 +88,6 @@ export default Vue.extend({
         return {
             menuItems: [
                 { name: 'Switch Site', to: '/logout' },
-                { name: 'Etc', to: '/test' },
             ],
         };
     },

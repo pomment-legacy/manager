@@ -8,4 +8,10 @@ module.exports = {
             return args;
         });
     },
+    configureWebpack: {
+        externals: {
+            // vue: 'Vue',
+            moment: 'moment',
+        },
+    },
 };
