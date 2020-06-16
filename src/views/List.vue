@@ -24,6 +24,7 @@ $mainTheme: #03a9f4;
     background-color: rgba(0, 0, 0, .9);
     box-shadow: 0 0 45px 0 rgba(0, 0, 0, .5);
     width: 100%;
+    z-index: 10000;
     nav {
         // max-width: 732px;
         height: 3.5rem;
@@ -67,6 +68,7 @@ $mainTheme: #03a9f4;
 
 .main {
     padding-top: 4.5rem;
+    padding-bottom: 1rem;
     max-width: 768px;
 }
 

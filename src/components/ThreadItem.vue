@@ -80,6 +80,9 @@ declare module 'vue/types/vue' {
             return `/list/posts/${base64url(this.url)}`;
         },
         latestPosted() {
+            if (new Date().getTime() - this.latestPostAt >= 31536000000) {
+                return moment(this.latestPostAt).format('MMM Do, YYYY');
+            }
             return moment(this.latestPostAt).fromNow();
         },
     },
