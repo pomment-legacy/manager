@@ -15,9 +15,16 @@
 
 <style lang="scss" scoped>
 .section-outer {
-    background-color: #282828;
+    --bg: #282828;
+    --shadow: rgba(0, 0, 0, 0.1) 0.5rem 0.5rem 1rem 1rem;
+    @media screen and (prefers-color-scheme: light) {
+        --bg: #fff;
+        --shadow: rgba(0, 0, 0, .09) 0.5rem 0.5rem 1rem 0.25rem;
+    }
+
+    background-color: var(--bg);
     border-radius: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.1) 0.5em 0.5em 1em 1em;
+    box-shadow: var(--shadow);
     ul {
         margin: 0;
         padding: 0;

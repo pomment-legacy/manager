@@ -20,9 +20,19 @@
 $mainTheme: #03a9f4;
 
 .nav-outer {
+    --bg: rgba(0, 0, 0, .9);
+    --shadow: rgba(0, 0, 0, .5);
+    --font: #ddd;
+
+    @media screen and (prefers-color-scheme: light) {
+        --bg: rgba(255, 255, 255, 0.85);
+        --shadow: rgba(0, 0, 0, .12);
+        --font: #191919;
+    }
+
     position: fixed;
-    background-color: rgba(0, 0, 0, .9);
-    box-shadow: 0 0 45px 0 rgba(0, 0, 0, .5);
+    background-color: var(--bg);
+    box-shadow: 0 0 45px 0 var(--shadow);
     width: 100%;
     z-index: 10000;
     nav {
@@ -32,7 +42,7 @@ $mainTheme: #03a9f4;
         padding: 0;
         h1 {
             float: left;
-            color: #ddd;
+            color: var(--font);
             font-size: 1.5em;
             margin: 0;
             height: 3.5rem;
@@ -51,7 +61,7 @@ $mainTheme: #03a9f4;
                     padding: 0 1rem;
                     height: 3.5rem;
                     line-height: 3.5rem;
-                    color: #ddd;
+                    color: var(--font);
                     text-decoration: none;
                     box-shadow: inset $mainTheme 0 0 0 0;
                     transition: color .21s, box-shadow .21s;

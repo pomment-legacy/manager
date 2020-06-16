@@ -17,7 +17,7 @@ body {
     margin: 0;
     background-color: #141414;
     @media screen and (prefers-color-scheme: light) {
-        background-color: #fff;
+        background-color: #e2e2e2;
     }
 }
 </style>

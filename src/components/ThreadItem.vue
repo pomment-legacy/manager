@@ -14,18 +14,37 @@
 </template>
 
 <style scoped lang="scss">
+$mainTheme: #03a9f4;
+
 li.thread-item {
+    --text: #fff;
+    --link: rgba(255, 255, 255, 0.75);
+    --hover: #fff;
+    --meta: rgba(255, 255, 255, 0.4);
+    --bottomLine: rgba(0, 0, 0, 0.39);
+
+    @media screen and (prefers-color-scheme: light) {
+        --text: #111;
+        --link: rgba(0, 0, 0, 0.7);
+        --hover: #03a9f4;
+        --meta: rgba(0, 0, 0, 0.4);
+        --bottomLine: rgba(0, 0, 0, 0.137);
+    }
+
     list-style: none;
-    color: #fff;
+    color: var(--text);
     padding: 0.6em 1em;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.39);
+    border-bottom: 2px solid var(--bottomLine);
+    &:last-child {
+        border-bottom-width: 0;
+    }
     .meta {
         display: block;
         a {
-            color: rgba(255, 255, 255, 0.75);
+            color: var(--link);
             text-decoration: none;
             &:hover {
-                color: #fff;
+                color: var(--hover);
                 text-decoration: underline;
             }
         }
@@ -38,7 +57,7 @@ li.thread-item {
             margin-top: 0.8em;
             padding: 0;
             font-size: 0.875em;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--meta);
             li {
                 margin: 0;
                 padding: 0;
