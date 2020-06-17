@@ -1,20 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import { sha512 } from 'js-sha512';
-import { IAuth } from 'pomment-common/dist/auth';
+import getAuthObject from '@/lib/getAuthObject';
 import ThreadList from '@/interface/thread-list';
 import RootState from '@/interface/state-types';
 
 Vue.use(Vuex);
-
-function getAuthObject(token: string): IAuth {
-    const time = new Date().getTime();
-    return {
-        time,
-        token: sha512.hmac.create(token).update(`${time}`).hex(),
-    };
-}
 
 export default new Vuex.Store<RootState>({
     strict: process.env.NODE_ENV !== 'production',

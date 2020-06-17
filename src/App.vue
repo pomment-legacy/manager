@@ -11,6 +11,18 @@
 </template>
 
 <style lang="scss">
+:root {
+    --text: #fff;
+    --link: rgba(255, 255, 255, 0.75);
+    --hover: #fff;
+
+    @media screen and (prefers-color-scheme: light) {
+        --text: #111;
+        --link: rgba(0, 0, 0, 0.7);
+        --hover: #03a9f4;
+    }
+}
+
 body {
     font-family:
     'Rubik',
@@ -23,9 +35,18 @@ body {
     SimSun,
     sans-serif;
     margin: 0;
+    color: var(--text);
     background-color: #141414;
     @media screen and (prefers-color-scheme: light) {
         background-color: #e2e2e2;
+    }
+    a {
+        color: var(--link);
+        text-decoration: none;
+        &:hover {
+            color: var(--hover);
+            text-decoration: underline;
+        }
     }
 }
 

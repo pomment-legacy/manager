@@ -18,15 +18,11 @@ $mainTheme: #03a9f4;
 
 li.thread-item {
     --text: #fff;
-    --link: rgba(255, 255, 255, 0.75);
-    --hover: #fff;
     --meta: rgba(255, 255, 255, 0.4);
     --bottomLine: rgba(0, 0, 0, 0.39);
 
     @media screen and (prefers-color-scheme: light) {
         --text: #111;
-        --link: rgba(0, 0, 0, 0.7);
-        --hover: #03a9f4;
         --meta: rgba(0, 0, 0, 0.4);
         --bottomLine: rgba(0, 0, 0, 0.137);
     }
@@ -40,14 +36,6 @@ li.thread-item {
     }
     .meta {
         display: block;
-        a {
-            color: var(--link);
-            text-decoration: none;
-            &:hover {
-                color: var(--hover);
-                text-decoration: underline;
-            }
-        }
         &.first {
             line-height: 1.5em;
             // margin-top: -0.25em;

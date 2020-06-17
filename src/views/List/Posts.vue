@@ -1,6 +1,12 @@
 <template>
     <div class="section-outer">
-        {{ url }}
+        <header>
+            <ul class="breadcrumb">
+                <li><router-link to="/list/threads">Threads</router-link></li>
+                <li>{{ thread.attr.title }}</li>
+            </ul>
+            <h1>{{ thread.attr.title }}</h1>
+        </header>
     </div>
 </template>
 
@@ -16,22 +22,83 @@
     background-color: var(--bg);
     border-radius: 0.5rem;
     box-shadow: var(--shadow);
-    ul {
+    ul.breadcrumb {
         margin: 0;
-        padding: 0;
+        padding: 1em;
+        font-size: 0.875rem;
+        li {
+            margin: 0;
+            padding: 0;
+            padding-right: 1.6em;
+            list-style: none;
+            display: inline-block;
+            &:after {
+                content: '•';
+                position: absolute;
+                width: 1.6em;
+                height: 1em;
+                line-height: 1em;
+                text-align: center;
+            }
+            &:last-child {
+                padding-right: 0;
+                &:after {
+                    display: none;
+                }
+            }
+        }
     }
 }
 </style>
 
 <script lang="ts">
+/* eslint-disable no-param-reassign */
+
 import Vue from 'vue';
+import Store from '@/store/index';
 import base64url from 'base64url';
+import axios from 'axios';
+import getAuthObject from '@/lib/getAuthObject';
+import { IThreadItem, IPostQueryResults } from 'pomment-common/dist/interface/post';
+
+interface PostResult {
+    url: string;
+    attr: IThreadItem;
+    locked: boolean;
+    content: IPostQueryResults[];
+}
+
+declare module 'vue/types/vue' {
+    interface Vue {
+        actualTitle: string;
+        thread: PostResult;
+    }
+}
 
 export default Vue.extend({
-    computed: {
-        url() {
-            return base64url.decode(this.$route.params.threadURL);
-        },
+    data() {
+        return {
+            actualTitle: '',
+            thread: {},
+        };
+    },
+    beforeRouteEnter(to, from, next) {
+        if (!Store.state.logged) {
+            next((target) => {
+                target.$router.replace('/login');
+            });
+            return;
+        }
+        axios.post(`${Store.state.url}/v3/manage/list`, {
+            url: base64url.decode(to.params.threadURL),
+            auth: getAuthObject(Store.state.token),
+        }).then((res) => {
+            next((target) => {
+                target.thread = res.data;
+            });
+        }).catch(() => {
+            next(false);
+        });
     },
 });
 </script>
