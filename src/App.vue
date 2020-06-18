@@ -60,7 +60,7 @@ body {
         background: #44a4fc;
         border: 0;
         border-radius: 0.4em;
-        box-shadow: rgba(0,0,0,.12) 0.25em 0.25em 1em 0.25em;
+        box-shadow: rgba(0, 0, 0, .12) 0 1rem 2rem 0;
         // line-height: 1.6em;
         .notification-title {
             font-weight: bold;

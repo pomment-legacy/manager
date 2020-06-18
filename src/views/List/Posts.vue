@@ -5,7 +5,7 @@
                 <li><router-link to="/list/threads">Threads</router-link></li>
                 <li>{{ thread.attr.title }}</li>
             </ul>
-            <h1>{{ thread.attr.title }}</h1>
+            <h1 class="title">{{ thread.attr.title }}</h1>
         </header>
     </div>
 </template>
@@ -22,9 +22,10 @@
     background-color: var(--bg);
     border-radius: 0.5rem;
     box-shadow: var(--shadow);
+    padding: 0 0.75em;
     ul.breadcrumb {
         margin: 0;
-        padding: 1em;
+        padding: 1em 0;
         font-size: 0.875rem;
         li {
             margin: 0;
@@ -47,6 +48,11 @@
                 }
             }
         }
+    }
+    h1.title {
+        margin: 0;
+        padding: 0.8rem 0;
+        font-size: 1.6em;
     }
 }
 </style>
