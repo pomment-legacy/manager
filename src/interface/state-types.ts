@@ -5,6 +5,7 @@ interface RootStates {
     url: string;
     token: string;
     threads: ThreadList[];
+    avatarPrefix: string;
 }
 
 export default RootStates;

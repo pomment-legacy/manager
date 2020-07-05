@@ -14,6 +14,7 @@ export default new Vuex.Store<RootState>({
         url: '',
         token: '',
         threads: [],
+        avatarPrefix: 'https://secure.gravatar.com/avatar/',
     },
     mutations: {
         setLoginInfo(state, param: { url: string; token: string }) {
