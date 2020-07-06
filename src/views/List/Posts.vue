@@ -24,6 +24,7 @@
                     :avatar="post.avatar"
                     :website="post.website"
                     :byAdmin="post.byAdmin"
+                    :hidden="post.hidden"
                     :createdAt="post.createdAt"
                     :key="post.id" />
             </ul>

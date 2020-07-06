@@ -1,5 +1,5 @@
 <template>
-    <li class="comment">
+    <li :class="{ comment: true, hidden: hidden }">
         <div class="item">
             <div class="avatar"
                 aria-hidden="true"
@@ -14,7 +14,8 @@
                             rel="nofollow"
                             class="name"
                             :href="website">{{ name }}</a>
-                        <span class="admin" v-show="byAdmin">MOD</span>
+                        <span class="badge admin" v-show="byAdmin">MOD</span>
+                        <span class="badge hidden" v-show="hidden">REMOVED</span>
                         <time :datetime="postedAtISO" :title="postedAtPretty">{{ postedAt }}</time>
                     </div>
                     <div class="text">{{ content }}</div>
@@ -41,6 +42,13 @@ $avatar: 3.4rem;
     }
     display: block;
     font-size: 0.875rem;
+    &.hidden {
+        opacity: 0.2;
+        transition: opacity 0.25s;
+        &:hover {
+            opacity: 1;
+        }
+    }
     .item {
         padding: $padding $padding 0em $avatar + $padding * 2;
         position: relative;
@@ -61,18 +69,30 @@ $avatar: 3.4rem;
                 font-weight: bold;
                 padding-right: 0.5rem;
             }
-            span.admin {
+            span.badge {
                 padding: 0em 0.4em;
-                background-color: #888;
-                color: #fff;
                 font-weight: bold;
                 border-radius: 0.3em;
                 font-size: 0.875em;
                 margin-right: 0.6rem;
+                &.admin {
+                    background-color: #888;
+                    color: #fff;
+                }
+                &.hidden {
+                    background-color: #d32f2f;
+                    color: #fff;
+                }
+            }
+            time {
+                padding-left: 0.5rem;
+                opacity: 0.8;
             }
             .text {
                 padding: calc(0.6rem - 0.25em) 0;
                 line-height: 1.5em;
+                white-space: pre-wrap;
+                word-break: break-all;
             }
             ul.action {
                 margin: 0;
@@ -118,6 +138,7 @@ declare module 'vue/types/vue' {
         email: string;
         avatar: string;
         website: string;
+        hidden: boolean;
         byAdmin: boolean;
         createdAt: number;
     }
@@ -162,6 +183,8 @@ export default class ThreadItem extends Vue {
     @Prop() avatar!: string;
 
     @Prop() website!: string;
+
+    @Prop() hidden!: boolean;
 
     @Prop() byAdmin!: boolean;
 
