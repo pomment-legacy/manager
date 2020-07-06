@@ -18,8 +18,9 @@
                         <time :datetime="postedAtISO" :title="postedAtPretty">{{ postedAt }}</time>
                     </div>
                     <div class="text">{{ content }}</div>
-                    <ul>
+                    <ul class="action">
                         <li><a>Reply</a></li>
+                        <li><a>Edit</a></li>
                     </ul>
                 </div>
             </div>
@@ -28,11 +29,18 @@
 </template>
 
 <style lang="scss" scoped>
-$padding: 0.6rem;
+$padding: 0.7rem;
 $avatar: 3.4rem;
 
 .comment {
+    --border: #484848;
+    --actionBar: rgba(255, 255, 255, 0.5);
+    @media screen and (prefers-color-scheme: light) {
+        --border: #b9b9b9;
+        --actionBar: rgba(0, 0, 0, 0.3);
+    }
     display: block;
+    font-size: 0.875rem;
     .item {
         padding: $padding $padding 0em $avatar + $padding * 2;
         position: relative;
@@ -47,6 +55,52 @@ $avatar: 3.4rem;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+        }
+        .content {
+            a.name {
+                font-weight: bold;
+                padding-right: 0.5rem;
+            }
+            span.admin {
+                padding: 0em 0.4em;
+                background-color: #888;
+                color: #fff;
+                font-weight: bold;
+                border-radius: 0.3em;
+                font-size: 0.875em;
+                margin-right: 0.6rem;
+            }
+            .text {
+                padding: calc(0.6rem - 0.25em) 0;
+                line-height: 1.5em;
+            }
+            ul.action {
+                margin: 0;
+                padding: 0.6em 0;
+                border-top: .0625rem var(--border) dashed;
+                li {
+                    margin: 0;
+                    padding: 0;
+                    padding-right: 1.6em;
+                    list-style: none;
+                    display: inline-block;
+                    &:after {
+                        content: '|';
+                        position: absolute;
+                        width: 1.6em;
+                        height: 1em;
+                        line-height: 1em;
+                        text-align: center;
+                        color: var(--actionBar);
+                    }
+                    &:last-child {
+                        padding-right: 0;
+                        &:after {
+                            display: none;
+                        }
+                    }
+                }
+            }
         }
     }
 }

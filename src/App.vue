@@ -25,15 +25,18 @@
 
 body {
     font-family:
-    'Rubik',
-    'Arial',
-    "PingFang SC",
-    "Source Han Sans CN Normal",
-    "Heiti SC",
-    "Microsoft YaHei",
-    "WenQuanYi Micro Hei",
-    SimSun,
-    sans-serif;
+        "lucida grande",
+        "lucida sans unicode",
+        "Helvetica Neue",
+        Tahoma,
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Source Han Sans CN Normal",
+        "Heiti SC",
+        "Microsoft YaHei",
+        "WenQuanYi Micro Hei",
+        SimSun,
+        sans-serif;
     margin: 0;
     color: var(--text);
     background-color: #141414;

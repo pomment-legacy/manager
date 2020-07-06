@@ -60,7 +60,7 @@
             @media (min-width: 640px) {
                 $lineHeight: 4rem;
                 line-height: $lineHeight;
-                padding: 1.2rem - (($lineHeight - 1rem) / 2) 0;
+                padding: 0;
                 font-size: 2rem;
             }
         }
@@ -144,7 +144,12 @@ export default Vue.extend({
     data() {
         return {
             actualTitle: '',
-            thread: {},
+            thread: {
+                url: '',
+                attr: {},
+                locked: false,
+                content: [],
+            },
         };
     },
     beforeRouteEnter(to, from, next) {

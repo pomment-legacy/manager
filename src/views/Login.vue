@@ -46,6 +46,7 @@ $mainTheme: #03a9f4;
         margin: 0;
         padding: 0.5em 0;
         color: var(--title);
+        font-family: 'Rubik';
     }
     input[type="url"], input[type="password"] {
         -webkit-appearance: none;
