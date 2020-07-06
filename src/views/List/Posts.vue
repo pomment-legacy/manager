@@ -22,6 +22,9 @@
                     :content="post.content"
                     :email="post.email"
                     :avatar="post.avatar"
+                    :website="post.website"
+                    :byAdmin="post.byAdmin"
+                    :createdAt="post.createdAt"
                     :key="post.id" />
             </ul>
         </div>
@@ -145,12 +148,6 @@ export default Vue.extend({
         };
     },
     beforeRouteEnter(to, from, next) {
-        if (!Store.state.logged) {
-            next((target) => {
-                target.$router.replace('/login');
-            });
-            return;
-        }
         axios.post(`${Store.state.url}/v3/manage/list`, {
             url: base64url.decode(to.params.threadURL),
             auth: getAuthObject(Store.state.token),

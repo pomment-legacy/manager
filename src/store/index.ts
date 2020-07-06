@@ -15,6 +15,7 @@ export default new Vuex.Store<RootState>({
         token: '',
         threads: [],
         avatarPrefix: 'https://secure.gravatar.com/avatar/',
+        nextPath: '/list/threads',
     },
     mutations: {
         setLoginInfo(state, param: { url: string; token: string }) {
@@ -26,6 +27,9 @@ export default new Vuex.Store<RootState>({
         },
         setThreadList(state, param: { threads: ThreadList[] }) {
             state.threads = param.threads;
+        },
+        setNextPath(state, param: { nextPath: string }) {
+            state.nextPath = param.nextPath;
         },
     },
     actions: {

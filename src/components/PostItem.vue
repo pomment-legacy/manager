@@ -14,8 +14,8 @@
                             rel="nofollow"
                             class="name"
                             :href="website">{{ name }}</a>
-                        <span class="admin hidden">MOD</span>
-                        <time :datetime="createdAt8601">{{ createdAtPretty }}</time>
+                        <span class="admin" v-show="byAdmin">MOD</span>
+                        <time :datetime="postedAtISO" :title="postedAtPretty">{{ postedAt }}</time>
                     </div>
                     <div class="text">{{ content }}</div>
                     <ul>
@@ -54,6 +54,7 @@ $avatar: 3.4rem;
 
 <script lang="ts">
 import md5 from 'blueimp-md5';
+import moment from 'moment';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 declare module 'vue/types/vue' {
@@ -62,6 +63,9 @@ declare module 'vue/types/vue' {
         content: string;
         email: string;
         avatar: string;
+        website: string;
+        byAdmin: boolean;
+        createdAt: number;
     }
 }
 
@@ -79,6 +83,18 @@ declare module 'vue/types/vue' {
         noAvatar() {
             return !(this.avatar || this.email);
         },
+        postedAt() {
+            if (new Date().getTime() - this.createdAt >= 31536000000) {
+                return moment(this.createdAt).format('MMM Do, YYYY');
+            }
+            return moment(this.createdAt).fromNow();
+        },
+        postedAtPretty() {
+            return moment(this.createdAt).format('MMMM Do YYYY, H:mm:ss');
+        },
+        postedAtISO() {
+            return new Date(this.createdAt).toISOString();
+        },
     },
 })
 
@@ -90,5 +106,11 @@ export default class ThreadItem extends Vue {
     @Prop() email!: string;
 
     @Prop() avatar!: string;
+
+    @Prop() website!: string;
+
+    @Prop() byAdmin!: boolean;
+
+    @Prop() createdAt!: number;
 }
 </script>

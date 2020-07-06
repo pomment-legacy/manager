@@ -123,7 +123,7 @@ import { version } from '../../package.json';
 
 export default Vue.extend({
     data: () => ({
-        url: process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000' : '',
+        url: process.env.NODE_ENV === 'development' ? `http://${document.location.hostname}:5000` : '',
         password: process.env.NODE_ENV === 'development' ? 'password' : '',
         version,
         noSubmit: false,
@@ -141,7 +141,7 @@ export default Vue.extend({
                 this.$store.commit('setLoginStatus', {
                     logged: true,
                 });
-                this.$router.push('/list/threads');
+                this.$router.push(this.$store.state.nextPath);
             }).catch((e) => {
                 let reason = `${e}`;
                 if (e.response?.status === 403) {

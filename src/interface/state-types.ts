@@ -6,6 +6,7 @@ interface RootStates {
     token: string;
     threads: ThreadList[];
     avatarPrefix: string;
+    nextPath: string;
 }
 
 export default RootStates;
