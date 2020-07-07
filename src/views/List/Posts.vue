@@ -9,7 +9,14 @@
                 <ul class="meta thread-option">
                     <li><router-link to="/list/threads">Back</router-link></li>
                     <li><router-link to="meta">Edit Meta</router-link></li>
-                    <li>Lock</li>
+                    <li>
+                        <a
+                        href="#"
+                        v-on:click.stop="toggleLock"
+                        :class="{ disabled: isToggling }">
+                            {{ lockStatus }}
+                        </a>
+                    </li>
                     <li><a :href="thread.url" target="_blank">Original</a></li>
                 </ul>
             </header>
@@ -97,6 +104,11 @@
                         display: none;
                     }
                 }
+                a.disabled {
+                    opacity: 0.4;
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
             }
         }
     }
@@ -138,6 +150,7 @@ declare module 'vue/types/vue' {
     interface Vue {
         actualTitle: string;
         thread: PostResult;
+        isToggling: boolean;
     }
 }
 
@@ -151,7 +164,32 @@ export default Vue.extend({
                 locked: false,
                 content: [],
             },
+            isToggling: false,
         };
+    },
+    methods: {
+        toggleLock() {
+            if (this.isToggling) {
+                return;
+            }
+            this.isToggling = true;
+            axios.post(`${Store.state.url}/v3/manage/lock`, {
+                auth: getAuthObject(Store.state.token),
+                url: this.thread.url,
+                locked: !this.thread.locked,
+            }).then(() => {
+                this.thread.locked = !this.thread.locked;
+                this.isToggling = false;
+            }).catch((e) => {
+                this.$notify({
+                    group: 'main',
+                    title: 'Toggle Lock Failed',
+                    type: 'error',
+                    text: e,
+                });
+                this.isToggling = false;
+            });
+        },
     },
     beforeRouteEnter(to, from, next) {
         axios.post(`${Store.state.url}/v3/manage/list`, {
@@ -168,6 +206,9 @@ export default Vue.extend({
     computed: {
         latestPosted() {
             return moment(this.latestPostAt).format('MMM Do, YYYY');
+        },
+        lockStatus() {
+            return this.thread.locked ? 'Unlock' : 'Lock';
         },
     },
     components: {

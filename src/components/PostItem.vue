@@ -70,7 +70,7 @@ $avatar: 3.4rem;
                 padding-right: 0.5rem;
             }
             span.badge {
-                padding: 0em 0.4em;
+                padding: 0.18em 0.4em;
                 font-weight: bold;
                 border-radius: 0.3em;
                 font-size: 0.875em;

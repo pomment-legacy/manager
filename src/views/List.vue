@@ -96,9 +96,6 @@ export default Vue.extend({
         };
     },
     beforeCreate() {
-        if (!this.$store.state.logged) {
-            this.$router.push('/login');
-        }
         if (this.$route.name === '/list') {
             this.$router.replace('/list/threads');
         }
