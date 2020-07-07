@@ -2,23 +2,29 @@
     <div>
         <div class="section-outer">
             <header>
-                <h1 class="title">{{ thread.attr.title }}</h1>
-                <div class="meta desc">
+                <input
+                    class="title"
+                    type="text"
+                    v-model="thread.attr.title"
+                    v-on:focus="setPrevTitle"
+                    v-on:blur="updateTitle">
+                <div class="padder">
+                    <div class="meta desc">
                         {{ thread.attr.amount }} Replies (Since {{ latestPosted }})
+                    </div>
+                    <ul class="meta thread-option">
+                        <li><router-link to="/list/threads">Back</router-link></li>
+                        <li>
+                            <a
+                            href="#"
+                            v-on:click.stop="toggleLock"
+                            :class="{ disabled: isToggling }">
+                                {{ lockStatus }}
+                            </a>
+                        </li>
+                        <li><a :href="thread.url" target="_blank">Original</a></li>
+                    </ul>
                 </div>
-                <ul class="meta thread-option">
-                    <li><router-link to="/list/threads">Back</router-link></li>
-                    <li><router-link to="meta">Edit Meta</router-link></li>
-                    <li>
-                        <a
-                        href="#"
-                        v-on:click.stop="toggleLock"
-                        :class="{ disabled: isToggling }">
-                            {{ lockStatus }}
-                        </a>
-                    </li>
-                    <li><a :href="thread.url" target="_blank">Original</a></li>
-                </ul>
             </header>
         </div>
         <div class="section-outer comments">
@@ -42,35 +48,54 @@
 <style lang="scss" scoped>
 .section-outer {
     --bg: #282828;
+    --text: #fff;
     --shadow: rgba(0, 0, 0, 0.1) 0.5rem 0.5rem 1rem 1rem;
     --border: #484848;
     --actionBar: rgba(255, 255, 255, 0.5);
     --status: rgba(0, 0, 0, 0.25);
+    --inputTitle: rgba(255, 255, 255, 0.06);
     @media screen and (prefers-color-scheme: light) {
         --bg: #fff;
+        --text: #000;
         --shadow: rgba(0, 0, 0, .09) 0.5rem 0.5rem 1rem 0.25rem;
         --border: #b9b9b9;
         --actionBar: rgba(0, 0, 0, 0.3);
         --status: rgba(0, 0, 0, 0.09);
+        --inputTitle: rgba(0, 0, 0, 0.06);
     }
 
     background-color: var(--bg);
     border-radius: 0.5rem;
     box-shadow: var(--shadow);
     header {
-        padding: 0 0.8rem;
-        h1.title {
+        .title {
             $lineHeight: 2.4rem;
             line-height: $lineHeight;
+            padding: 0.4rem 0.8rem;
             margin: 0;
-            padding: 1.2rem - (($lineHeight - 1rem) / 2) 0;
+            margin-bottom: 0.6rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            box-sizing: border-box;
             font-size: 1.4rem;
+            color: var(--text);
             @media (min-width: 640px) {
                 $lineHeight: 4rem;
                 line-height: $lineHeight;
-                padding: 0;
                 font-size: 2rem;
             }
+        }
+        input.title {
+            appearance: none;
+            width: 100%;
+            border: 0;
+            background-color: var(--inputTitle);
+            font-weight: bold;
+            &:focus {
+                outline: none;
+            }
+        }
+        .padder {
+            padding: 0 0.8rem;
         }
         .meta {
             margin: 0;
@@ -151,6 +176,7 @@ declare module 'vue/types/vue' {
         actualTitle: string;
         thread: PostResult;
         isToggling: boolean;
+        prevTitle: string;
     }
 }
 
@@ -163,6 +189,7 @@ export default Vue.extend({
                 attr: {},
                 locked: false,
                 content: [],
+                prevTitle: '',
             },
             isToggling: false,
         };
@@ -184,6 +211,38 @@ export default Vue.extend({
                 this.$notify({
                     group: 'main',
                     title: 'Toggle Lock Failed',
+                    type: 'error',
+                    text: e,
+                });
+                this.isToggling = false;
+            });
+        },
+        setPrevTitle() {
+            this.prevTitle = this.thread.attr.title;
+        },
+        updateTitle() {
+            if (this.prevTitle === this.thread.attr.title) {
+                return;
+            }
+            axios.post(`${Store.state.url}/v3/manage/edit-title`, {
+                auth: getAuthObject(Store.state.token),
+                url: this.thread.url,
+                title: this.thread.attr.title,
+            }).then(() => {
+                this.$store.commit('setThreadTitle', {
+                    url: this.thread.url,
+                    title: this.thread.attr.title,
+                });
+                this.$notify({
+                    group: 'main',
+                    title: 'Thread Updated',
+                    type: 'success',
+                    text: 'The title of this thread is updated',
+                });
+            }).catch((e) => {
+                this.$notify({
+                    group: 'main',
+                    title: 'Thread Update Failed',
                     type: 'error',
                     text: e,
                 });

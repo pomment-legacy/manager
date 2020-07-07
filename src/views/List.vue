@@ -34,7 +34,7 @@ $mainTheme: #03a9f4;
     background-color: var(--bg);
     box-shadow: 0 0 45px 0 var(--shadow);
     width: 100%;
-    z-index: 10000;
+    z-index: 4000;
     nav {
         // max-width: 732px;
         height: 3.5rem;

@@ -31,6 +31,15 @@ export default new Vuex.Store<RootState>({
         setNextPath(state, param: { nextPath: string }) {
             state.nextPath = param.nextPath;
         },
+        setThreadTitle(state, param: { url: string; title: string }) {
+            for (let i = 0; i < state.threads.length; i += 1) {
+                if (state.threads[i].url === param.url) {
+                    state.threads[i].title = param.title;
+                    return;
+                }
+            }
+            console.warn(`[Pomment] Unable to find ${param.url} from the thread list`);
+        },
     },
     actions: {
         async getThreadList(ctx) {
