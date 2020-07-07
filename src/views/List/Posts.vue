@@ -264,7 +264,7 @@ export default Vue.extend({
     },
     computed: {
         latestPosted() {
-            return moment(this.latestPostAt).format('MMM Do, YYYY');
+            return moment(this.thread.attr.latestPostAt).format('MMM Do, YYYY');
         },
         lockStatus() {
             return this.thread.locked ? 'Unlock' : 'Lock';
