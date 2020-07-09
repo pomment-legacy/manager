@@ -4,7 +4,7 @@ import './vendors/fluidable.scss';
 import Vue from 'vue';
 import Notifications from 'vue-notification';
 import App from './App.vue';
-import './registerServiceWorker';
+// import './registerServiceWorker';
 import router from './router';
 import store from './store';
 
