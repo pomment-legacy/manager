@@ -30,6 +30,7 @@
         <div class="section-outer compose">
             <h2>Add new comment</h2>
             <form v-on:submit.prevent="addComment">
+                <div class="reply-to">You are repling {{ replyName }}'s comment. <a>Cancel</a></div>
                 <textarea ref="commentBox" v-model="content" v-on:input="updateHeight" required />
                 <input
                     type="submit"
@@ -164,6 +165,28 @@
         }
         form {
             padding: 0 0.8rem;
+            .reply-to {
+                padding: 0.6em;
+                font-size: 0.875rem;
+                background-color: #ff6500;
+                border-radius: 0.2rem;
+                color: rgba(255, 255, 255, 0.85);
+                margin-bottom: 0.6rem;
+                a {
+                    color: #fff;
+                    text-decoration: none;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            textarea {
+                margin-bottom: 0.6rem;
+            }
+            input[type="submit"] {
+                font-size: 0.875rem;
+                border-radius: 0.2rem;
+            }
         }
     }
     &.comments {
@@ -204,6 +227,7 @@ declare module 'vue/types/vue' {
         noSubmit: boolean;
         submitDisplay: string;
         content: string;
+        replyName: string;
     }
 }
 
@@ -223,6 +247,7 @@ export default Vue.extend({
             noSubmit: false,
             submitDisplay: 'Submit',
             content: '',
+            replyName: '',
         };
     },
     methods: {
@@ -299,7 +324,7 @@ export default Vue.extend({
                 this.submitDisplay = 'Submit';
                 this.$notify({
                     group: 'main',
-                    title: 'Comment Posted',
+                    title: 'Success',
                     type: 'success',
                     text: 'Your comment is posted',
                 });

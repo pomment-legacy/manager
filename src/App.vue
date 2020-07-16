@@ -96,14 +96,13 @@ body {
         box-sizing: border-box;
         height: 120px;
         border: 1px solid var(--inputBorder);
-        border-radius: 0.4rem;
+        border-radius: 0.2rem;
         resize: none;
         padding: 0.3em 0.4em;
         line-height: 1.5em;
         font-size: 0.875rem;
         background-color: transparent;
         color: var(--inputText);
-        margin-bottom: 0.8rem;
         &:focus {
             outline: none;
             border: 1px solid var(--inputBorderFocus);
