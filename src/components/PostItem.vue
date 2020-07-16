@@ -20,7 +20,7 @@
                     </div>
                     <div class="text">{{ content }}</div>
                     <ul class="action">
-                        <li><a>Reply</a></li>
+                        <li><a v-on:click.stop="$emit('reply', id, name)" href="#">Reply</a></li>
                         <li><a>Edit</a></li>
                     </ul>
                 </div>
@@ -133,6 +133,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 declare module 'vue/types/vue' {
     interface Vue {
+        id: number;
         name: string;
         content: string;
         email: string;
@@ -174,6 +175,8 @@ declare module 'vue/types/vue' {
 })
 
 export default class ThreadItem extends Vue {
+    @Prop() id!: number;
+
     @Prop() name!: string;
 
     @Prop() content!: string;

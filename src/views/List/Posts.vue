@@ -30,7 +30,10 @@
         <div class="section-outer compose">
             <h2>Add new comment</h2>
             <form v-on:submit.prevent="addComment">
-                <div class="reply-to">You are repling {{ replyName }}'s comment. <a>Cancel</a></div>
+                <div class="reply-to" v-show="this.replyID >= 0">
+                    You are repling {{ replyName }}'s comment.&nbsp;
+                    <a href="#" v-on:click.stop="setReplyTarget(-1)">Cancel</a>
+                </div>
                 <textarea ref="commentBox" v-model="content" v-on:input="updateHeight" required />
                 <input
                     type="submit"
@@ -43,6 +46,8 @@
             <ul class="comment-items">
                 <PostItem
                     v-for="post in thread.content"
+                    v-on:reply="setReplyTarget"
+                    :id="post.id"
                     :name="post.name"
                     :content="post.content"
                     :email="post.email"
@@ -62,6 +67,7 @@
     --bg: #282828;
     --text: #fff;
     --shadow: rgba(0, 0, 0, 0.1) 0.5rem 0.5rem 1rem 1rem;
+    --shadowFocus: rgba(0, 0, 0, 0.75) 0.5rem 0.5rem 2.3rem 0.25rem;
     --border: #484848;
     --actionBar: rgba(255, 255, 255, 0.5);
     --status: rgba(0, 0, 0, 0.25);
@@ -70,6 +76,7 @@
         --bg: #fff;
         --text: #000;
         --shadow: rgba(0, 0, 0, .09) 0.5rem 0.5rem 1rem 0.25rem;
+        --shadowFocus: rgba(0, 0, 0, 0.21) 0.5rem 0.5rem 2.3rem 0.25rem;
         --border: #b9b9b9;
         --actionBar: rgba(0, 0, 0, 0.3);
         --status: rgba(0, 0, 0, 0.09);
@@ -158,6 +165,12 @@
         margin-top: 1rem;
     }
     &.compose {
+        &.sticky {
+            z-index: 3500;
+            position: sticky;
+            top: 3.5rem + 0.8rem;
+            box-shadow: var(--shadowFocus);
+        }
         h2 {
             margin: 0;
             padding: 0.8rem 0.8rem;
@@ -190,6 +203,7 @@
         }
     }
     &.comments {
+        z-index: 3000;
         ul.comment-items {
             padding: 0;
             margin: 0;
@@ -227,6 +241,7 @@ declare module 'vue/types/vue' {
         noSubmit: boolean;
         submitDisplay: string;
         content: string;
+        replyID: number;
         replyName: string;
     }
 }
@@ -247,6 +262,7 @@ export default Vue.extend({
             noSubmit: false,
             submitDisplay: 'Submit',
             content: '',
+            replyID: -1,
             replyName: '',
         };
     },
@@ -317,6 +333,7 @@ export default Vue.extend({
                 auth: getAuthObject(Store.state.token),
                 url: this.thread.url,
                 title: this.thread.attr.title,
+                parent: this.replyID,
                 content: this.content,
             }).then((e) => {
                 this.thread.content.push(e.data);
@@ -338,6 +355,10 @@ export default Vue.extend({
                     text: e,
                 });
             });
+        },
+        setReplyTarget(id: number, name: string) {
+            this.replyID = id;
+            this.replyName = name;
         },
     },
     beforeRouteEnter(to, from, next) {
