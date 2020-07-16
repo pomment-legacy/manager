@@ -11,15 +11,24 @@
 </template>
 
 <style lang="scss">
+$mobile: 480px;
+$mainTheme: #03a9f4;
+
 :root {
     --text: #fff;
     --link: rgba(255, 255, 255, 0.75);
     --hover: #fff;
+    --inputText: #fff;
+    --inputBorder: rgba(255, 255, 255, 0.13);
+    --inputBorderFocus: rgba(255, 255, 255, 0.6);
 
     @media screen and (prefers-color-scheme: light) {
         --text: #111;
         --link: rgba(0, 0, 0, 0.7);
-        --hover: #03a9f4;
+        --hover: $mainTheme;
+        --inputText: #000;
+        --inputBorder: rgba(0, 0, 0, 0.25);
+        --inputBorderFocus: rgba(0, 0, 0, 0.7);
     }
 }
 
@@ -49,6 +58,77 @@ body {
         &:hover {
             color: var(--hover);
             text-decoration: underline;
+        }
+    }
+    input[type="url"], input[type="password"] {
+        -webkit-appearance: none;
+        box-sizing: border-box;
+        display: block;
+        background-color: transparent;
+        color: var(--inputText);
+        border: 0;
+        border-radius: 0;
+        padding: 0.6em 0.4em;
+        width: 100%;
+        font-size: 1em;
+        border-bottom: 2px var(--inputBorder) solid;
+        margin-bottom: 0.44em;
+        transition: border-bottom-color 0.2s;
+        &::placeholder {
+            color: var(--inputBorder);
+            transition: color 0.2s;
+        }
+        &:focus {
+            outline: none;
+            border-bottom: 2px var(--inputBorderFocus) solid;
+            &::placeholder {
+                color: var(--inputBorderFocus);
+            }
+        }
+    }
+    input[type="password"] {
+        margin-bottom: 1em;
+    }
+    textarea {
+        appearance: none;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        height: 120px;
+        border: 1px solid var(--inputBorder);
+        border-radius: 0.4rem;
+        resize: none;
+        padding: 0.3em 0.4em;
+        line-height: 1.5em;
+        font-size: 0.875rem;
+        background-color: transparent;
+        color: var(--inputText);
+        margin-bottom: 0.8rem;
+        &:focus {
+            outline: none;
+            border: 1px solid var(--inputBorderFocus);
+        }
+    }
+    input[type="submit"] {
+        -webkit-appearance: none;
+        width: 100%;
+        @media (min-width: $mobile) {
+            width: 8em;
+        }
+        height: 2.5em;
+        border: 0;
+        border-radius: 0.5em;
+        background-color: $mainTheme;
+        opacity: 1;
+        transition: background-color 0.2s, opacity 0.1s;
+        margin-bottom: 0.8rem;
+        color: #fff;
+        &:focus {
+            outline: none;
+            background-color: darken($color: $mainTheme, $amount: 10%);
+        }
+        &:disabled {
+            opacity: 0.5;
         }
     }
 }

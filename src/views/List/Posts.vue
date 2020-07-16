@@ -27,6 +27,17 @@
                 </div>
             </header>
         </div>
+        <div class="section-outer compose">
+            <h2>Add new comment</h2>
+            <form v-on:submit.prevent="addComment">
+                <textarea ref="commentBox" v-model="content" v-on:input="updateHeight" required />
+                <input
+                    type="submit"
+                    value="Submit"
+                    v-model="submitDisplay"
+                    v-bind:disabled="noSubmit">
+            </form>
+        </div>
         <div class="section-outer comments">
             <ul class="comment-items">
                 <PostItem
@@ -142,8 +153,20 @@
         padding: 0.6rem 0.8rem;
         font-size: 0.875rem;
     }
-    &.comments {
+    &.comments, &.compose {
         margin-top: 1rem;
+    }
+    &.compose {
+        h2 {
+            margin: 0;
+            padding: 0.8rem 0.8rem;
+            font-size: 1.2rem;
+        }
+        form {
+            padding: 0 0.8rem;
+        }
+    }
+    &.comments {
         ul.comment-items {
             padding: 0;
             margin: 0;
@@ -177,6 +200,10 @@ declare module 'vue/types/vue' {
         thread: PostResult;
         isToggling: boolean;
         prevTitle: string;
+        minHeight: number;
+        noSubmit: boolean;
+        submitDisplay: string;
+        content: string;
     }
 }
 
@@ -192,6 +219,10 @@ export default Vue.extend({
                 prevTitle: '',
             },
             isToggling: false,
+            minHeight: 0,
+            noSubmit: false,
+            submitDisplay: 'Submit',
+            content: '',
         };
     },
     methods: {
@@ -249,6 +280,40 @@ export default Vue.extend({
                 this.isToggling = false;
             });
         },
+        updateHeight() {
+            const element = (this.$refs.commentBox as HTMLTextAreaElement);
+            element.style.height = '0px';
+            element.style.height = `${Math.max(this.minHeight, element.scrollHeight + 3)}px`;
+        },
+        addComment() {
+            this.noSubmit = true;
+            this.submitDisplay = 'Please Wait ...';
+            axios.post(`${Store.state.url}/v3/manage/submit`, {
+                auth: getAuthObject(Store.state.token),
+                url: this.thread.url,
+                title: this.thread.attr.title,
+                content: this.content,
+            }).then((e) => {
+                this.thread.content.push(e.data);
+                this.noSubmit = false;
+                this.submitDisplay = 'Submit';
+                this.$notify({
+                    group: 'main',
+                    title: 'Comment Posted',
+                    type: 'success',
+                    text: 'Your comment is posted',
+                });
+            }).catch((e) => {
+                this.noSubmit = false;
+                this.submitDisplay = 'Submit';
+                this.$notify({
+                    group: 'main',
+                    title: 'Comment Post Failed',
+                    type: 'error',
+                    text: e,
+                });
+            });
+        },
     },
     beforeRouteEnter(to, from, next) {
         axios.post(`${Store.state.url}/v3/manage/list`, {
@@ -269,6 +334,15 @@ export default Vue.extend({
         lockStatus() {
             return this.thread.locked ? 'Unlock' : 'Lock';
         },
+    },
+    mounted() {
+        // 可变高度文本框初始化
+        const element = (this.$refs.commentBox as HTMLTextAreaElement);
+        element.style.height = '0px';
+        element.value = '\n\n\n\n';
+        this.minHeight = element.scrollHeight + 3;
+        element.style.height = `${this.minHeight}px`;
+        element.value = '';
     },
     components: {
         PostItem,
