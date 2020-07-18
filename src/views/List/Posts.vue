@@ -81,6 +81,7 @@
 </template>
 
 <style lang="scss" scoped>
+$mobile: 480px;
 $stickyTop: 3.5rem + 0.8rem;
 
 .section-outer {
@@ -226,8 +227,14 @@ $stickyTop: 3.5rem + 0.8rem;
                 border-radius: 0.2rem;
             }
             .options {
-                display: inline-block;
-                padding-left: 1rem;
+                display: block;
+                padding: 0;
+                padding-bottom: 0.6rem;
+                @media (min-width: $mobile) {
+                    display: inline-block;
+                    padding: 0;
+                    padding-left: 1rem;
+                }
                 label {
                     margin-left: 0.5em;
                 }

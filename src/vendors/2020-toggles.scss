@@ -15,11 +15,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     --active: #275EFE;
     --active-inner: #fff;
     --focus: 2px rgba(39, 94, 254, .3);
-    --border: #BBC1E1;
+    --border: #666;
     --border-hover: #275EFE;
-    --background: #fff;
+    --background: transparent;
     --disabled: #F6F8FF;
     --disabled-inner: #E1E6F9;
+    @media screen and (prefers-color-scheme: light) {
+      --border: #BBC1E1;
+      --background: #fff;
+    }
     -webkit-appearance: none;
     -moz-appearance: none;
     height: 21px;
