@@ -1,5 +1,6 @@
 import 'normalize.css/normalize.css';
 import './vendors/fluidable.scss';
+import './vendors/2020-toggles.scss';
 
 import Vue from 'vue';
 import Notifications from 'vue-notification';

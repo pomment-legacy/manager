@@ -33,6 +33,7 @@
         <div :class="{
             'section-outer': true,
             compose: true,
+            'allow-sticky': allowSticky,
             sticky: stickyCompose,
         }" ref="compose" v-scroll="toggleSticky">
             <h2>Add new comment</h2>
@@ -52,6 +53,10 @@
                     value="Submit"
                     v-model="submitDisplay"
                     v-bind:disabled="noSubmit">
+                <div class="options" v-if="stickySupport">
+                    <input id="enable-sticky" type="checkbox" class="switch" v-model="allowSticky">
+                    <label for="enable-sticky">Stick Form</label>
+                </div>
             </form>
         </div>
         <div class="section-outer comments">
@@ -181,11 +186,13 @@ $stickyTop: 3.5rem + 0.8rem;
     }
     &.compose {
         z-index: 3500;
-        position: sticky;
-        top: $stickyTop;
         transition: box-shadow 0.2s;
-        &.sticky {
-            box-shadow: var(--shadowFocus);
+        &.allow-sticky {
+            position: sticky;
+            top: $stickyTop;
+            &.sticky {
+                box-shadow: var(--shadowFocus);
+            }
         }
         h2 {
             margin: 0;
@@ -201,6 +208,7 @@ $stickyTop: 3.5rem + 0.8rem;
                 border-radius: 0.2rem;
                 color: rgba(255, 255, 255, 0.85);
                 margin-bottom: 0.6rem;
+                line-height: 1.4em;
                 a {
                     color: #fff;
                     text-decoration: none;
@@ -211,10 +219,18 @@ $stickyTop: 3.5rem + 0.8rem;
             }
             textarea {
                 margin-bottom: 0.6rem;
+                overflow: hidden;
             }
             input[type="submit"] {
                 font-size: 0.875rem;
                 border-radius: 0.2rem;
+            }
+            .options {
+                display: inline-block;
+                padding-left: 1rem;
+                label {
+                    margin-left: 0.5em;
+                }
             }
         }
     }
@@ -259,7 +275,9 @@ declare module 'vue/types/vue' {
         content: string;
         replyID: number;
         replyName: string;
+        stickySupport: boolean;
         stickyCompose: boolean;
+        allowSticky: boolean;
     }
 }
 
@@ -281,15 +299,19 @@ export default Vue.extend({
             content: '',
             replyID: -1,
             replyName: '',
+            stickySupport: CSS.supports ? CSS.supports('position', 'sticky') : false,
             stickyCompose: false,
+            allowSticky: true,
         };
     },
     methods: {
         toggleSticky() {
-            const stickyElm = this.$refs.compose as HTMLDivElement;
-            const current = Math.round(stickyElm.getBoundingClientRect().top);
-            const target = parseFloat(getComputedStyle(stickyElm).top);
-            this.stickyCompose = current - 1 <= target;
+            if (this.stickySupport && this.allowSticky) {
+                const stickyElm = this.$refs.compose as HTMLDivElement;
+                const current = Math.round(stickyElm.getBoundingClientRect().top);
+                const target = parseFloat(getComputedStyle(stickyElm).top);
+                this.stickyCompose = current - 1 <= target;
+            }
         },
         toggleLock() {
             if (this.isToggling) {

@@ -93,9 +93,11 @@ body {
         appearance: none;
         display: block;
         width: 100%;
-        box-sizing: border-box;
         height: 120px;
-        border: 1px solid var(--inputBorder);
+        box-sizing: border-box;
+        box-shadow: unset;
+        border: 2px solid var(--inputBorder);
+        transition: border-color 0.1s;
         border-radius: 0.2rem;
         resize: none;
         padding: 0.3em 0.4em;
@@ -105,7 +107,7 @@ body {
         color: var(--inputText);
         &:focus {
             outline: none;
-            border: 1px solid var(--inputBorderFocus);
+            border: 2px solid var(--inputBorderFocus);
         }
     }
     input[type="submit"] {
