@@ -2,9 +2,12 @@
     <div>
         <div class="section-outer">
             <header>
+                <label for="post-title" style="display: none">Title: </label>
                 <input
+                    id="post-title"
                     class="title"
                     type="text"
+                    placeholder="Title"
                     v-model="thread.attr.title"
                     v-on:focus="setPrevTitle"
                     v-on:blur="updateTitle">
@@ -17,7 +20,7 @@
                         <li>
                             <a
                             href="#"
-                            v-on:click.stop="toggleLock"
+                            v-on:click.prevent="toggleLock"
                             :class="{ disabled: isToggling }">
                                 {{ lockStatus }}
                             </a>
@@ -27,12 +30,12 @@
                 </div>
             </header>
         </div>
-        <div class="section-outer compose">
+        <div class="section-outer compose" ref="compose">
             <h2>Add new comment</h2>
             <form v-on:submit.prevent="addComment">
-                <div class="reply-to" v-show="this.replyID >= 0">
+                <div class="reply-to" v-if="this.replyID >= 0">
                     You are repling {{ replyName }}'s comment.&nbsp;
-                    <a href="#" v-on:click.stop="setReplyTarget(-1)">Cancel</a>
+                    <a href="#" v-on:click.prevent="setReplyTarget(-1)">Cancel</a>
                 </div>
                 <textarea ref="commentBox" v-model="content" v-on:input="updateHeight" required />
                 <input
@@ -56,6 +59,7 @@
                     :byAdmin="post.byAdmin"
                     :hidden="post.hidden"
                     :createdAt="post.createdAt"
+                    :isActive="replyID === post.id"
                     :key="post.id" />
             </ul>
         </div>
@@ -67,7 +71,7 @@
     --bg: #282828;
     --text: #fff;
     --shadow: rgba(0, 0, 0, 0.1) 0.5rem 0.5rem 1rem 1rem;
-    --shadowFocus: rgba(0, 0, 0, 0.75) 0.5rem 0.5rem 2.3rem 0.25rem;
+    --shadowFocus: rgba(0, 0, 0, 0.75) 0.5rem 0.5rem 2.1rem 0.25rem;
     --border: #484848;
     --actionBar: rgba(255, 255, 255, 0.5);
     --status: rgba(0, 0, 0, 0.25);
@@ -76,7 +80,7 @@
         --bg: #fff;
         --text: #000;
         --shadow: rgba(0, 0, 0, .09) 0.5rem 0.5rem 1rem 0.25rem;
-        --shadowFocus: rgba(0, 0, 0, 0.21) 0.5rem 0.5rem 2.3rem 0.25rem;
+        --shadowFocus: rgba(0, 0, 0, 0.21) 0.5rem 0.5rem 2.1rem 0.25rem;
         --border: #b9b9b9;
         --actionBar: rgba(0, 0, 0, 0.3);
         --status: rgba(0, 0, 0, 0.09);
@@ -165,12 +169,10 @@
         margin-top: 1rem;
     }
     &.compose {
-        &.sticky {
-            z-index: 3500;
-            position: sticky;
-            top: 3.5rem + 0.8rem;
-            box-shadow: var(--shadowFocus);
-        }
+        z-index: 3500;
+        position: sticky;
+        top: 3.5rem + 0.8rem;
+        box-shadow: var(--shadowFocus);
         h2 {
             margin: 0;
             padding: 0.8rem 0.8rem;

@@ -48,6 +48,7 @@ $mainTheme: #03a9f4;
             height: 3.5rem;
             line-height: 3.5rem;
             padding: 0 1rem;
+            font-family: 'Rubik', sans-serif;
         }
         ul.nav-item {
             float: right;

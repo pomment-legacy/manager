@@ -1,10 +1,9 @@
 <template>
-    <li :class="{ comment: true, hidden: hidden }">
+    <li :class="{ comment: true, hidden: hidden, active: isActive }">
         <div class="item">
-            <div class="avatar"
+            <div :class="{ avatar: true, 'no-name': noAvatar }"
                 aria-hidden="true"
                 v-bind:style="{ backgroundImage: 'url(' + computedAvatar + ')' }">
-                <div class="unknown-guy" v-show="noAvatar"></div>
             </div>
             <div class="content">
                 <div class="entry">
@@ -14,13 +13,13 @@
                             rel="nofollow"
                             class="name"
                             :href="website">{{ name }}</a>
-                        <span class="badge admin" v-show="byAdmin">MOD</span>
-                        <span class="badge hidden" v-show="hidden">REMOVED</span>
+                        <span class="badge admin" v-if="byAdmin">MOD</span>
+                        <span class="badge hidden" v-if="hidden">REMOVED</span>
                         <time :datetime="postedAtISO" :title="postedAtPretty">{{ postedAt }}</time>
                     </div>
                     <div class="text">{{ content }}</div>
                     <ul class="action">
-                        <li><a v-on:click.stop="$emit('reply', id, name)" href="#">Reply</a></li>
+                        <li><a v-on:click.prevent="$emit('reply', id, name)" href="#">Reply</a></li>
                         <li><a>Edit</a></li>
                     </ul>
                 </div>
@@ -36,12 +35,24 @@ $avatar: 3.4rem;
 .comment {
     --border: #484848;
     --actionBar: rgba(255, 255, 255, 0.5);
+    --active: rgba(255, 255, 255, 0.08);
     @media screen and (prefers-color-scheme: light) {
         --border: #b9b9b9;
         --actionBar: rgba(0, 0, 0, 0.3);
+        --active: rgba(0, 0, 0, 0.08);
     }
     display: block;
     font-size: 0.875rem;
+    transition: background-color 0.2s;
+    &.active {
+        background-color: var(--active);
+    }
+    &:first-child {
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+    &:last-child {
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
     &.hidden {
         opacity: 0.2;
         transition: opacity 0.25s;
@@ -59,10 +70,27 @@ $avatar: 3.4rem;
             width: $avatar;
             height: $avatar;
             border-radius: 0.4rem;
-            background-color: #666;
+            background-color: #fff;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            &.no-name {
+                background-color: #666;
+                &::after {
+                    content: "?";
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    font-size: $avatar * 0.75;
+                    font-family: 'Rubik', sans-serif;
+                    color: #fff;
+                    line-height: $avatar;
+                    text-align: center;
+                    pointer-events: none;
+                }
+            }
         }
         .content {
             a.name {
@@ -127,6 +155,8 @@ $avatar: 3.4rem;
 </style>
 
 <script lang="ts">
+/* eslint-disable lines-between-class-members */
+
 import md5 from 'blueimp-md5';
 import moment from 'moment';
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -142,6 +172,7 @@ declare module 'vue/types/vue' {
         hidden: boolean;
         byAdmin: boolean;
         createdAt: number;
+        isActive: boolean;
     }
 }
 
@@ -176,21 +207,14 @@ declare module 'vue/types/vue' {
 
 export default class ThreadItem extends Vue {
     @Prop() id!: number;
-
     @Prop() name!: string;
-
     @Prop() content!: string;
-
     @Prop() email!: string;
-
     @Prop() avatar!: string;
-
     @Prop() website!: string;
-
     @Prop() hidden!: boolean;
-
     @Prop() byAdmin!: boolean;
-
     @Prop() createdAt!: number;
+    @Prop() isActive!: boolean;
 }
 </script>
