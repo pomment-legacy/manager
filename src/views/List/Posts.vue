@@ -325,6 +325,12 @@ export default Vue.extend({
             }).then(() => {
                 this.thread.locked = !this.thread.locked;
                 this.isToggling = false;
+                this.$notify({
+                    group: 'main',
+                    title: 'Success',
+                    type: 'success',
+                    text: 'Lock status toggled',
+                });
             }).catch((e) => {
                 this.$notify({
                     group: 'main',
