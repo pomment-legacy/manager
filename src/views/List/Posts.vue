@@ -30,14 +30,23 @@
                 </div>
             </header>
         </div>
-        <div class="section-outer compose" ref="compose">
+        <div :class="{
+            'section-outer': true,
+            compose: true,
+            sticky: stickyCompose,
+        }" ref="compose" v-scroll="toggleSticky">
             <h2>Add new comment</h2>
             <form v-on:submit.prevent="addComment">
                 <div class="reply-to" v-if="this.replyID >= 0">
                     You are repling {{ replyName }}'s comment.&nbsp;
                     <a href="#" v-on:click.prevent="setReplyTarget(-1)">Cancel</a>
                 </div>
-                <textarea ref="commentBox" v-model="content" v-on:input="updateHeight" required />
+                <textarea
+                placeholder="Input your comment here ..."
+                ref="commentBox"
+                v-model="content"
+                v-on:input="updateHeight"
+                required />
                 <input
                     type="submit"
                     value="Submit"
@@ -67,11 +76,13 @@
 </template>
 
 <style lang="scss" scoped>
+$stickyTop: 3.5rem + 0.8rem;
+
 .section-outer {
     --bg: #282828;
     --text: #fff;
     --shadow: rgba(0, 0, 0, 0.1) 0.5rem 0.5rem 1rem 1rem;
-    --shadowFocus: rgba(0, 0, 0, 0.75) 0.5rem 0.5rem 2.1rem 0.25rem;
+    --shadowFocus: rgba(0, 0, 0, 0.6) 0.5rem 0.5rem 2.1rem 0.25rem;
     --border: #484848;
     --actionBar: rgba(255, 255, 255, 0.5);
     --status: rgba(0, 0, 0, 0.25);
@@ -171,8 +182,11 @@
     &.compose {
         z-index: 3500;
         position: sticky;
-        top: 3.5rem + 0.8rem;
-        box-shadow: var(--shadowFocus);
+        top: $stickyTop;
+        transition: box-shadow 0.2s;
+        &.sticky {
+            box-shadow: var(--shadowFocus);
+        }
         h2 {
             margin: 0;
             padding: 0.8rem 0.8rem;
@@ -245,6 +259,7 @@ declare module 'vue/types/vue' {
         content: string;
         replyID: number;
         replyName: string;
+        stickyCompose: boolean;
     }
 }
 
@@ -266,9 +281,16 @@ export default Vue.extend({
             content: '',
             replyID: -1,
             replyName: '',
+            stickyCompose: false,
         };
     },
     methods: {
+        toggleSticky() {
+            const stickyElm = this.$refs.compose as HTMLDivElement;
+            const current = Math.round(stickyElm.getBoundingClientRect().top);
+            const target = parseFloat(getComputedStyle(stickyElm).top);
+            this.stickyCompose = current - 1 <= target;
+        },
         toggleLock() {
             if (this.isToggling) {
                 return;
@@ -385,7 +407,7 @@ export default Vue.extend({
     },
     mounted() {
         // 可变高度文本框初始化
-        const element = (this.$refs.commentBox as HTMLTextAreaElement);
+        const element = this.$refs.commentBox as HTMLTextAreaElement;
         element.style.height = '0px';
         element.value = '\n\n\n\n';
         this.minHeight = element.scrollHeight + 3;

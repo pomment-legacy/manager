@@ -11,6 +11,17 @@ import store from './store';
 Vue.use(Notifications);
 Vue.config.productionTip = false;
 
+Vue.directive('scroll', {
+    inserted(el, binding) {
+        const f = (evt: Event) => {
+            if (binding.value(evt, el)) {
+                window.removeEventListener('scroll', f);
+            }
+        };
+        window.addEventListener('scroll', f);
+    },
+});
+
 new Vue({
     router,
     store,
