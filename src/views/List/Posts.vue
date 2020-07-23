@@ -312,11 +312,10 @@ export default Vue.extend({
         };
     },
     methods: {
-        toggleSticky() {
+        toggleSticky(e: Event, el: HTMLDivElement) {
             if (this.stickySupport && this.allowSticky) {
-                const stickyElm = this.$refs.compose as HTMLDivElement;
-                const current = Math.round(stickyElm.getBoundingClientRect().top);
-                const target = parseFloat(getComputedStyle(stickyElm).top);
+                const current = Math.round(el.getBoundingClientRect().top);
+                const target = parseFloat(getComputedStyle(el).top);
                 this.stickyCompose = current - 1 <= target;
             }
         },
