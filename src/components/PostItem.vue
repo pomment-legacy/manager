@@ -20,7 +20,7 @@
                     <div class="text">{{ content }}</div>
                     <ul class="action">
                         <li><a v-on:click.prevent="$emit('reply', id, name)" href="#">Reply</a></li>
-                        <li><a>Edit</a></li>
+                        <li><router-link :to="editPath">Edit</router-link></li>
                     </ul>
                 </div>
             </div>
@@ -157,6 +157,7 @@ $avatar: 3.4rem;
 <script lang="ts">
 /* eslint-disable lines-between-class-members */
 
+import base64url from 'base64url';
 import md5 from 'blueimp-md5';
 import moment from 'moment';
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -201,6 +202,9 @@ declare module 'vue/types/vue' {
         },
         postedAtISO() {
             return new Date(this.createdAt).toISOString();
+        },
+        editPath() {
+            return `${base64url(this.$parent.$data.thread.url)}/${this.id}`;
         },
     },
 })

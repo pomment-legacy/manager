@@ -60,7 +60,7 @@ body {
             text-decoration: underline;
         }
     }
-    input[type="url"], input[type="password"] {
+    input[type="url"], input[type="password"], input[type="text"], input[type="email"] {
         -webkit-appearance: none;
         box-sizing: border-box;
         display: block;
@@ -71,6 +71,7 @@ body {
         padding: 0.6em 0.4em;
         width: 100%;
         font-size: 1em;
+        border: 0;
         border-bottom: 2px var(--inputBorder) solid;
         margin-bottom: 0.44em;
         transition: border-bottom-color 0.2s;
@@ -96,18 +97,26 @@ body {
         height: 120px;
         box-sizing: border-box;
         box-shadow: unset;
-        border: 2px solid var(--inputBorder);
+        // border: 2px solid var(--inputBorder);
+        border: 0;
+        border-bottom: 2px var(--inputBorder) solid;
         transition: border-color 0.1s;
-        border-radius: 0.2rem;
+        // border-radius: 0.2rem;
+        border-radius: 0;
         resize: none;
-        padding: 0.3em 0.4em;
+        padding: 0.5em 0.4em;
         line-height: 1.5em;
         font-size: 0.875rem;
         background-color: transparent;
         color: var(--inputText);
+        &::placeholder {
+            color: var(--inputBorder);
+            transition: color 0.2s;
+        }
         &:focus {
             outline: none;
-            border: 2px solid var(--inputBorderFocus);
+            // border: 2px solid var(--inputBorderFocus);
+            border-bottom: 2px var(--inputBorderFocus) solid;
         }
     }
     input[type="submit"] {
@@ -166,5 +175,17 @@ body {
             background: #68CD86;
         }
     }
+}
+
+.clearfix:after,
+.clearfix:before {
+    content: " ";
+    display: table
+}
+.clearfix:after {
+    clear: both
+}
+.clearfix {
+    zoom: 1
 }
 </style>
