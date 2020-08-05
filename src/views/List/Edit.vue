@@ -7,7 +7,7 @@
                     <router-link :to="backURL">Back</router-link>
                 </span>
             </div>
-            <form>
+            <form v-on:submit.prevent="editComment">
                 <input class="data-input" type="text" placeholder="Name" v-model="post.name">
                 <input class="data-input" type="email" placeholder="Email" v-model="post.email">
                 <input class="data-input" type="url" placeholder="Avatar URL" v-model="post.avatar">
@@ -129,16 +129,22 @@ import { IPostQueryResults } from 'pomment-common/dist/interface/post';
 
 declare module 'vue/types/vue' {
     interface Vue {
+        id: number;
         url: string;
         post: IPostQueryResults;
+        noSubmit: boolean;
+        submitDisplay: string;
     }
 }
 
 export default Vue.extend({
     data() {
         return {
+            id: 0,
             url: '',
             post: {},
+            noSubmit: false,
+            submitDisplay: 'Submit',
         };
     },
     methods: {
@@ -146,6 +152,38 @@ export default Vue.extend({
             const element = (this.$refs.commentBox as HTMLTextAreaElement);
             element.style.height = '0px';
             element.style.height = `${Math.max(this.minHeight, element.scrollHeight + 3)}px`;
+        },
+        editComment() {
+            this.noSubmit = true;
+            this.submitDisplay = 'Please Wait ...';
+            axios.post(`${Store.state.url}/v3/manage/edit`, {
+                auth: getAuthObject(Store.state.token),
+                url: this.url,
+                id: this.id,
+                name: this.post.name,
+                email: this.post.email,
+                website: this.post.website,
+                avatar: this.post.avatar,
+                content: this.post.content,
+                hidden: this.post.hidden,
+            }).then(() => {
+                this.$notify({
+                    group: 'main',
+                    title: 'Success',
+                    type: 'success',
+                    text: 'The comment is edited',
+                });
+                this.$router.push(this.backURL);
+            }).catch((e) => {
+                this.noSubmit = false;
+                this.submitDisplay = 'Submit';
+                this.$notify({
+                    group: 'main',
+                    title: 'Edit Post Failed',
+                    type: 'error',
+                    text: e,
+                });
+            });
         },
     },
     computed: {
@@ -161,6 +199,7 @@ export default Vue.extend({
         }).then((res) => {
             next((target) => {
                 console.log(res);
+                target.id = Number(to.params.id);
                 target.url = base64url.decode(to.params.threadURL);
                 target.post = res.data;
             });
