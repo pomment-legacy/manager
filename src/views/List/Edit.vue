@@ -198,7 +198,6 @@ export default Vue.extend({
             auth: getAuthObject(Store.state.token),
         }).then((res) => {
             next((target) => {
-                console.log(res);
                 target.id = Number(to.params.id);
                 target.url = base64url.decode(to.params.threadURL);
                 target.post = res.data;
