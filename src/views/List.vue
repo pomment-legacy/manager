@@ -92,7 +92,7 @@ export default Vue.extend({
     data() {
         return {
             menuItems: [
-                { name: 'Switch Site', to: '/logout' },
+                // { name: 'Switch Site', to: '/logout' },
             ],
         };
     },
