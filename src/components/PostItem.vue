@@ -19,7 +19,8 @@
                     </div>
                     <div class="text">{{ content }}</div>
                     <ul class="action">
-                        <li><a v-on:click.prevent="$emit('reply', id, name)" href="#">Reply</a></li>
+                        <li><a v-on:click.prevent="$emit('reply', uuid, name)"
+                            href="#">Reply</a></li>
                         <li><router-link :to="editPath">Edit</router-link></li>
                     </ul>
                 </div>
