@@ -64,7 +64,7 @@
                 <PostItem
                     v-for="post in thread.content"
                     v-on:reply="setReplyTarget"
-                    :id="post.id"
+                    :uuid="post.uuid"
                     :name="post.name"
                     :content="post.content"
                     :email="post.email"
@@ -73,8 +73,8 @@
                     :byAdmin="post.byAdmin"
                     :hidden="post.hidden"
                     :createdAt="post.createdAt"
-                    :isActive="replyID === post.id"
-                    :key="post.id" />
+                    :isActive="replyID === post.uuid"
+                    :key="post.uuid" />
             </ul>
         </div>
     </div>
@@ -260,14 +260,14 @@ import Store from '@/store/index';
 import base64url from 'base64url';
 import axios from 'axios';
 import getAuthObject from '@/lib/getAuthObject';
-import { IThreadItem, IPostQueryResults } from 'pomment-common/dist/interface/post';
+import { ThreadItem, PostQueryResults } from '@/interface/post';
 import PostItem from '@/components/PostItem.vue';
 
 interface PostResult {
     url: string;
-    attr: IThreadItem;
+    attr: ThreadItem;
     locked: boolean;
-    content: IPostQueryResults[];
+    content: PostQueryResults[];
 }
 
 declare module 'vue/types/vue' {
@@ -280,7 +280,7 @@ declare module 'vue/types/vue' {
         noSubmit: boolean;
         submitDisplay: string;
         content: string;
-        replyID: number;
+        replyUUID: string;
         replyName: string;
         stickySupport: boolean;
         stickyCompose: boolean;
@@ -391,7 +391,7 @@ export default Vue.extend({
                 auth: getAuthObject(Store.state.token),
                 url: this.thread.url,
                 title: this.thread.attr.title,
-                parent: this.replyID,
+                parent: this.replyUUID,
                 content: this.content,
             }).then((e) => {
                 this.thread.content.push(e.data);
@@ -414,8 +414,8 @@ export default Vue.extend({
                 });
             });
         },
-        setReplyTarget(id: number, name: string) {
-            this.replyID = id;
+        setReplyTarget(uuid: string, name: string) {
+            this.replyUUID = uuid;
             this.replyName = name;
         },
     },

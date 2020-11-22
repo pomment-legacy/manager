@@ -1,7 +1,7 @@
 import { sha512 } from 'js-sha512';
-import { IAuth } from 'pomment-common/dist/auth';
+import { Auth } from '@/lib/auth';
 
-export default function getAuthObject(token: string): IAuth {
+export default function getAuthObject(token: string): Auth {
     const time = new Date().getTime();
     return {
         time,

@@ -125,13 +125,13 @@ import Store from '@/store/index';
 import getAuthObject from '@/lib/getAuthObject';
 import base64url from 'base64url';
 import axios from 'axios';
-import { IPostQueryResults } from 'pomment-common/dist/interface/post';
+import { PostQueryResults } from '@/interface/post';
 
 declare module 'vue/types/vue' {
     interface Vue {
-        id: number;
+        uuid: string;
         url: string;
-        post: IPostQueryResults;
+        post: PostQueryResults;
         noSubmit: boolean;
         submitDisplay: string;
     }
@@ -140,7 +140,7 @@ declare module 'vue/types/vue' {
 export default Vue.extend({
     data() {
         return {
-            id: 0,
+            uuid: '',
             url: '',
             post: {},
             noSubmit: false,
@@ -159,7 +159,7 @@ export default Vue.extend({
             axios.post(`${Store.state.url}/v3/manage/edit`, {
                 auth: getAuthObject(Store.state.token),
                 url: this.url,
-                id: this.id,
+                uuid: this.uuid,
                 name: this.post.name,
                 email: this.post.email,
                 website: this.post.website,
@@ -194,11 +194,11 @@ export default Vue.extend({
     beforeRouteEnter(to, from, next) {
         axios.post(`${Store.state.url}/v3/manage/post`, {
             url: base64url.decode(to.params.threadURL),
-            id: Number(to.params.id),
+            uuid: to.params.uuid,
             auth: getAuthObject(Store.state.token),
         }).then((res) => {
             next((target) => {
-                target.id = Number(to.params.id);
+                target.uuid = to.params.uuid;
                 target.url = base64url.decode(to.params.threadURL);
                 target.post = res.data;
             });

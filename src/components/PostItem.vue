@@ -164,7 +164,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 declare module 'vue/types/vue' {
     interface Vue {
-        id: number;
+        uuid: string;
         name: string;
         content: string;
         email: string;
@@ -204,13 +204,13 @@ declare module 'vue/types/vue' {
             return new Date(this.createdAt).toISOString();
         },
         editPath() {
-            return `${base64url(this.$parent.$data.thread.url)}/${this.id}`;
+            return `${base64url(this.$parent.$data.thread.url)}/${this.uuid}`;
         },
     },
 })
 
 export default class ThreadItem extends Vue {
-    @Prop() id!: number;
+    @Prop() uuid!: string;
     @Prop() name!: string;
     @Prop() content!: string;
     @Prop() email!: string;
