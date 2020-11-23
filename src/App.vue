@@ -30,6 +30,14 @@ $mainTheme: #03a9f4;
         --inputBorder: rgba(0, 0, 0, 0.25);
         --inputBorderFocus: rgba(0, 0, 0, 0.7);
     }
+
+    font-size: 18px;
+    @media (max-width: 1600px) {
+        font-size: 16px;
+    }
+    @media (max-width: 320px) {
+        font-size: 14px;
+    }
 }
 
 body {

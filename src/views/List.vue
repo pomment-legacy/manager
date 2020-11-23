@@ -80,7 +80,7 @@ $mainTheme: #03a9f4;
 .main {
     padding-top: 4.5rem;
     padding-bottom: 1rem;
-    max-width: 768px;
+    max-width: 48rem;
 }
 
 </style>
